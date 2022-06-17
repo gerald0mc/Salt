@@ -1,0 +1,8 @@
+# Keep Run Directory empty
+run/**
+!run/.gitkeep
+
+# Unneeded folders
+build
+.idea
+.gradle
