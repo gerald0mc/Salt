@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'net.minecraftforge.gradle.forge' version '2.0.2'
+    id "net.minecraftforge.gradle.forge" version "6f53277"
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 version = mod_version
-group = "co.uk.isxander"
+group = "me.gerald.salt"
 archivesBaseName = mod_id
 
 minecraft {
