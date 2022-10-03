@@ -1,45 +1,54 @@
-plugins {
-    id 'java'
-    id "net.minecraftforge.gradle.forge" version "6f53277"
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            name = 'forge'
+            url = 'https://maven.minecraftforge.net'
+        }
+        maven {
+            name = 'JitPack'
+            url = 'https://jitpack.io'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+    }
 }
 
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow" version "2.0.4"
+}
+
+apply plugin: "net.minecraftforge.gradle.forge
 version = mod_version
 group = "me.gerald.salt"
 archivesBaseName = mod_id
-
 minecraft {
     version = "1.8.9-11.15.1.2318-1.8.9"
     runDir = "run"
     mappings = "stable_22"
-
     replace('${GRADLE_MOD_ID}', mod_id)
     replace('${GRADLE_MOD_NAME}', mod_name)
     replace('${GRADLE_MOD_DESCRIPTION}', mod_description)
     replace('${GRADLE_MOD_VERSION}', mod_version)
-
     makeObfSourceJar = false
 }
-
 configurations {
     include
     implementation.extendsFrom(include)
 }
-
 dependencies {
-
 }
-
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
     inputs.property 'name', mod_name
     inputs.property 'modid', mod_id
     inputs.property 'description', mod_description
-
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
         expand (
                 'version':project.version,
                 'mcversion':project.minecraft.version,
@@ -47,16 +56,12 @@ processResources {
                 'modid': mod_id,
                 'description':mod_description
         )
-
     }
-
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
-
 // Forge does not import resources properly.
 task moveResources {
     doLast {
@@ -64,21 +69,16 @@ task moveResources {
                 todir: "${buildDir}/classes/java"
     }
 }
-
 tasks.moveResources.dependsOn processResources
 tasks.classes.dependsOn moveResources
-
 shadowJar {
     archiveClassifier.set('')
-
     configurations = [project.configurations.include]
     duplicatesStrategy DuplicatesStrategy.EXCLUDE
 }
-
 reobf {
     shadowJar {
         mappingType = 'SEARGE'
     }
 }
-
 reobfJar.dependsOn tasks.shadowJar
