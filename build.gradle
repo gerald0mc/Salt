@@ -1,8 +1,27 @@
-plugins {
-    id 'java'
-    id "net.minecraftforge.gradle.forge" version "6f53277"
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            name = 'forge'
+            url = 'https://maven.minecraftforge.net'
+        }
+        maven {
+            name = 'JitPack'
+            url = 'https://jitpack.io'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+    }
 }
+
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow" version "2.0.4"
+}
+
+apply plugin: "net.minecraftforge.gradle.forge
 
 version = mod_version
 group = "me.gerald.salt"
